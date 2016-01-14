@@ -10,13 +10,32 @@
 	<p>
 		<% object = LinkThumbnailer.generate(post.caption) %>
 			<%= link_to post.caption, :target => "_blank" do %>
-				<p><%= object.title %></p>
 				<%= image_tag object.favicon %>
-				<p><%= object.description %></p>
+				<p><%= object.title %></p>
+				<!-- <p><%= object.description %></p> -->
 				<%= image_tag object.images.first.src.to_s %>
 			<% end %>
 	</p>
 	
+	<% if post.comments %>
+	  <% post.comments.each do |comment| %>
+      <%= comment.user.user_name %>
+      <%= comment.content %>
+  		<% if comment.user == current_user %>
+        <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: { confirm: "Are you sure?" } %>
+      <% end %>
+      <br />
+	  <% end %>
+	<% end %>
+
+
+	<% if user_signed_in? %>
+	  <%= form_for [post, post.comments.build] do |f| %>
+	    <%= f.text_field :content, placeholder: 'Add a comment...' %>
+	  <% end %>
+	<% end %>
 	<hr>
 
 <% end %>
+
+<p><%= paginate @posts %></p>
