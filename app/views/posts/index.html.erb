@@ -1,1 +1,22 @@
 <h1>Main Page</h1>
+
+<% @posts.each do |post| %>
+	<p>
+		<%= truncate(post.title, length: 70, separator: ' ') %><br>
+		<%= post.user.user_name %>
+		<%= post.created_at %>
+	</p>
+
+	<p>
+		<% object = LinkThumbnailer.generate(post.caption) %>
+			<%= link_to post.caption, :target => "_blank" do %>
+				<p><%= object.title %></p>
+				<%= image_tag object.favicon %>
+				<p><%= object.description %></p>
+				<%= image_tag object.images.first.src.to_s %>
+			<% end %>
+	</p>
+	
+	<hr>
+
+<% end %>
