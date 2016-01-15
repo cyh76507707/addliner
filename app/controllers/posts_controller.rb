@@ -26,7 +26,7 @@ class PostsController < ApplicationController
     end
   end
 
-	def edit  
+	def edit
 	  @post = Post.find(params[:id])
 	end
 
@@ -41,15 +41,22 @@ class PostsController < ApplicationController
     end
   end
 
-	def destroy  
+	def destroy
 	  @post = Post.find(params[:id])
 	  @post.destroy
 	  redirect_to posts_path
 	end
 
+  def upvote
+    @post = Post.find(params[:post_id])
+    @post.upvote_by current_user
+
+    render json: { count: @post.get_upvotes.size }, status: :ok
+  end
+
 	private
 
-	def post_params  
+	def post_params
 	  params.require(:post).permit(:id, :title, :caption)
 	end
 
@@ -57,7 +64,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def owned_post  
+  def owned_post
     unless current_user == @post.user
       flash[:alert] = "That post doesn't belong to you!"
       redirect_to root_path

@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
 		@comments = Post.comments.order(id: :desc).page(params[:page]).per(2)
 	end
 
-	def create  
+	def create
 		@post = Post.find(params[:post_id])
 	  @comment = @post.comments.build(comment_params)
 	  @comment.user = current_user
@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
 	  end
 	end
 
-	def destroy  
+	def destroy
 	  @comment = @post.comments.find(params[:id])
 
 	  @comment.destroy
@@ -29,11 +29,11 @@ class CommentsController < ApplicationController
 
 	private
 
-	def comment_params  
+	def comment_params
 	  params.require(:comment).permit(:content)
 	end
 
-	def set_post  
+	def set_post
 	  @post = Post.find(params[:post_id])
 	end
 
