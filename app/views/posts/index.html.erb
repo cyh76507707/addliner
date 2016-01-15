@@ -1,4 +1,29 @@
-<h1>Main Page</h1>
+<div class="transitions-enabled" id="pins">
+  <% @posts.each do |post| %>
+  <% object = LinkThumbnailer.generate(post.caption) %>
+    <div class="box panel panel-default">
+      <h2>
+        <%= truncate(post.title, length: 70, separator: ' ') %>
+      </h2>
+      <%= link_to post.caption, :target => "_blank" do %>
+        <div class="img-box">
+          <%= image_tag (object.images.first.try(:src).try(:to_s) || image_path('no_image.jpg') )%>
+          <div class="img-box-caption">
+            <div class="img-box-caption-title">
+              <%= object.title %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <p class="user">
+        AddLined by
+        <%= post.user.user_name %>
+      </p>
+    </div>
+  <% end %>
+</div>
+
+
 
 <% @posts.each do |post| %>
   <p>

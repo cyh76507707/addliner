@@ -126,6 +126,8 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    masonry-rails (0.2.1)
+      rails
     mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
@@ -260,6 +262,7 @@ DEPENDENCIES
   jquery-turbolinks
   kaminari (~> 0.16.3)
   link_thumbnailer
+  masonry-rails (~> 0.2.1)
   paperclip (~> 4.2.1)
   rails (= 4.2.0)
   rspec-rails (~> 3.3.0)

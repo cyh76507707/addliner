@@ -10,6 +10,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'paperclip', '~> 4.2.1'
+gem 'masonry-rails', '~> 0.2.1'
 gem 'bootstrap-sass', '~> 3.3.3'
 gem 'devise'
 gem 'acts_as_votable', '~> 0.10.0'
