@@ -5,70 +5,55 @@
       <h2>
         <%= truncate(post.title, length: 70, separator: ' ') %>
       </h2>
+      <div class="likes">
+        <span class="vote-link" data-url="<%= post_upvote_path(post) %>" data-id="<%= post.id %>">
+          <i class="fa fa-thumbs-up"> <span class="likes-text">Likes</span></i> <span class="vote-count"><b> <%= post.get_upvotes.size %></b></span>
+        </span>
+      </div>
       <%= link_to post.caption, :target => "_blank" do %>
         <div class="img-box">
-          <%= image_tag (object.images.first.try(:src).try(:to_s) || image_path('no_image.jpg') )%>
+          <%= image_tag (object.images.first.try(:src).try(:to_s) || image_path('no_image.png') )%>
           <div class="img-box-caption">
             <div class="img-box-caption-title">
-              <%= object.title %>
+              <div class="favicon">
+                <%= image_tag (object.favicon.try(:to_s) || image_path('no_favicon.png') )%>
+              </div>
+              <div class="link-title">
+                <b><%= truncate(object.title, length: 30, separator: ' ') %></b>
+              </div>
+              <div class="link-description">
+                <%= truncate(object.description, length: 120, separator: ' ') %>
+              </div>
             </div>
           </div>
         </div>
       <% end %>
+      <p class="text-left comment">
+        <% if post.comments %>
+          <% post.comments.each do |comment| %>
+            <b><%= comment.user.user_name %></b>
+            <%= comment.content %>
+            <% if comment.user == current_user %>
+              <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: { confirm: "Are you sure?" } %>
+            <% end %>
+            <br />
+          <% end %>
+        <% end %>
+
+
+        <% if user_signed_in? %>
+          <%= form_for [post, post.comments.build] do |f| %>
+            <%= f.text_field :content, placeholder: 'Add a comment...' %>
+          <% end %>
+        <% end %>
+      </p>
       <p class="user">
-        AddLined by
-        <%= post.user.user_name %>
+        AddLined by <b><%= post.user.user_name %></b>
       </p>
     </div>
   <% end %>
 </div>
 
-
-
-<% @posts.each do |post| %>
-  <p>
-    <%= truncate(post.title, length: 70, separator: ' ') %><br>
-    <%= post.user.user_name %>
-    <%= post.created_at %>
-  </p>
-
-  <p>
-    <% object = LinkThumbnailer.generate(post.caption) %>
-      <%= link_to post.caption, :target => "_blank" do %>
-        <%= image_tag object.favicon %>
-        <p><%= object.title %></p>
-        <!-- <p><%= object.description %></p> -->
-        <%= image_tag (object.images.first.try(:src).try(:to_s) || image_path('no_image.jpg') )%>
-      <% end %>
-  </p>
-
-  <div class="likes">
-    <span class="vote-link" data-url="<%= post_upvote_path(post) %>" data-id="<%= post.id %>">
-      Upvote <span class="vote-count"><%= post.get_upvotes.size %></span>
-    </span>
-  </div>
-
-
-  <% if post.comments %>
-    <% post.comments.each do |comment| %>
-      <%= comment.user.user_name %>
-      <%= comment.content %>
-      <% if comment.user == current_user %>
-        <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: { confirm: "Are you sure?" } %>
-      <% end %>
-      <br />
-    <% end %>
-  <% end %>
-
-
-  <% if user_signed_in? %>
-    <%= form_for [post, post.comments.build] do |f| %>
-      <%= f.text_field :content, placeholder: 'Add a comment...' %>
-    <% end %>
-  <% end %>
-  <hr>
-
-<% end %>
 
 <p><%= paginate @posts %></p>
 
